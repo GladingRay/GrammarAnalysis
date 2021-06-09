@@ -135,6 +135,9 @@ impl Item {
             dot_pos: 0
         }
     }
+    pub fn is_eq(&self, other: &Item) -> bool {
+        self.production == other.production && self.dot_pos == other.dot_pos
+    }
 }
 
 pub struct ItemSet {
@@ -142,6 +145,44 @@ pub struct ItemSet {
     transforms: HashMap<usize, usize>
 }
 
+impl ItemSet {
+    pub fn new() -> ItemSet {
+        ItemSet {
+            item_vec: Vec::new(),
+            transforms: HashMap::new()
+        }
+    }
+    pub fn is_item_in(&self, item: &Item) -> bool {
+        for i in &self.item_vec {
+            if i.is_eq(item) {
+                return true;
+            }
+        }
+        false
+    }
+    pub fn is_eq(&self, other: &ItemSet) -> bool {
+        if self.item_vec.len() != other.item_vec.len() {
+            return false;
+        }
+        for i in &self.item_vec {
+            if !other.is_item_in(i) {
+                return false;
+            }
+        }
+        true
+    }
+}
+
 pub struct ItemSetFamily {
-    family: Vec<ItemSet>
+    family: Vec<ItemSet>,
+    gm  : Grammar
+}
+
+impl ItemSetFamily {
+    pub fn new(gm: Grammar) -> ItemSetFamily {
+        ItemSetFamily {
+            family: Vec::new(),
+            gm
+        }
+    }
 }
