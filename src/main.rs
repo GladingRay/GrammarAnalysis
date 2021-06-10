@@ -1,5 +1,6 @@
 mod grammar;
 use grammar::*;
+use std::io::stdin;
 
 fn main() {
     let mut gm = Grammar::new();
@@ -10,5 +11,9 @@ fn main() {
     isf.print_dfa();
     isf.build_table();
     isf.print_table();
-    isf.check_string(String::from("abbcde"));
+    let mut input_str = String::new();
+    println!("输入待检测字符串");
+    stdin().read_line(&mut input_str).expect("input error");
+    let input_str = input_str.trim();
+    isf.check_string(input_str.to_string());
 }
